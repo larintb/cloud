@@ -1,0 +1,664 @@
+<!--
+  ===============================================================
+  This is a FICTITIOUS store created just for fun.
+  All products, prices, and content are imaginary.
+  Made with love for cannabis culture. 🍀
+  ===============================================================
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLOUD</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { width: 100%; font-family: 'Nunito', sans-serif; overflow-x: hidden; }
+
+  /* ── FIXED SKY ── */
+  .sky {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, #0d6db5 0%, #1a8fd4 25%, #36b0f4 55%, #6dcaf8 80%, #a8e0ff 100%);
+  }
+  .sky::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 120% 55% at 50% 85%, rgba(255,255,255,0.18) 0%, transparent 70%);
+  }
+
+  /* ── FIXED CLOUDS ── */
+  .clouds-layer { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+  .cloud { position: absolute; filter: drop-shadow(0 8px 24px rgba(255,255,255,0.45)); }
+  .cloud svg { display: block; }
+
+  @keyframes sway {
+    0%   { transform: translateX(var(--from)) translateY(0px); }
+    50%  { transform: translateX(var(--to))   translateY(var(--bob)); }
+    100% { transform: translateX(var(--from)) translateY(0px); }
+  }
+
+  .c1 { top:-2%; left:50%; margin-left:clamp(-260px,-16vw,-140px); width:clamp(280px,32vw,520px); --from:-18vw; --to:18vw; --bob:-12px; animation:sway 18s ease-in-out 0s infinite; }
+  .c2 { bottom:5%; left:2%; width:clamp(200px,26vw,400px); --from:0vw; --to:22vw; --bob:-10px; animation:sway 22s ease-in-out 2s infinite; }
+  .c3 { bottom:2%; right:2%; width:clamp(220px,28vw,430px); --from:0vw; --to:-20vw; --bob:-8px; animation:sway 25s ease-in-out 1s infinite; }
+  .c4 { top:32%; left:5%; width:clamp(160px,20vw,300px); --from:0vw; --to:28vw; --bob:-14px; animation:sway 30s ease-in-out 4s infinite; }
+  .c5 { top:50%; right:5%; width:clamp(180px,22vw,340px); --from:0vw; --to:-25vw; --bob:-10px; animation:sway 28s ease-in-out 6s infinite; }
+  .c6 { top:12%; right:6%; width:clamp(140px,18vw,260px); --from:0vw; --to:-16vw; --bob:-8px; animation:sway 20s ease-in-out 3s infinite; }
+
+  /* ── SCROLLABLE PAGE ── */
+  .page { position: relative; z-index: 10; }
+
+  section {
+    width: 100%; min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; padding: 60px 20px;
+  }
+
+  /* ── KEYFRAMES ── */
+  @keyframes letter-pop {
+    0%   { opacity:0; transform:translateY(80px) scale(0.5) rotate(-8deg); filter:blur(10px); }
+    70%  { opacity:1; filter:blur(0); transform:translateY(-12px) scale(1.08) rotate(1deg); }
+    100% { opacity:1; transform:translateY(0) scale(1) rotate(0deg); filter:blur(0); }
+  }
+  @keyframes fade-up {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes bounce-down {
+    0%,100% { transform: rotate(45deg) translateY(0); }
+    50%      { transform: rotate(45deg) translateY(8px); }
+  }
+
+  /* ── 3D TEXT ── */
+  .text-3d {
+    display: inline-block; font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; color: #fff;
+    text-shadow:
+      0  2px 0 #a8d8f8,
+      0  4px 0 #7ec0f0,
+      0  6px 0 #55a8e8,
+      0  8px 0 #2c90d8,
+      0 10px 0 #0a78c8,
+      0 12px 0 #0060b0,
+      0 14px 0 #004898,
+      0 20px 10px rgba(0,40,110,0.35),
+      0 30px 30px rgba(0,40,110,0.22),
+      0 40px 60px rgba(0,40,110,0.14);
+    -webkit-text-stroke: 2px rgba(255,255,255,0.2);
+  }
+
+  /* ═══ SECTION 1: CLOUD ═══ */
+  .letter {
+    display: inline-block; opacity: 0;
+    animation: letter-pop 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    font-size: clamp(100px, 22vw, 280px);
+  }
+  .l1 { animation-delay:0.20s; }
+  .l2 { animation-delay:0.36s; }
+  .l3 { animation-delay:0.52s; }
+  .l4 { animation-delay:0.68s; }
+  .l5 { animation-delay:0.84s; }
+
+  .subtitle {
+    opacity:0; animation:fade-up 0.8s ease 1.4s forwards;
+    font-size: clamp(15px,2.2vw,26px); font-weight:900;
+    color: #fff; letter-spacing:0.35em; text-transform:uppercase;
+    text-shadow: 0 1px 12px rgba(0,50,140,0.6), 0 0 30px rgba(0,80,200,0.3);
+    margin-top:8px;
+  }
+
+  .scroll-hint {
+    position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+    opacity:0; animation:fade-up 0.8s ease 1.8s forwards;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    color:#fff; font-size:12px; font-weight:900; letter-spacing:0.22em;
+    text-transform:uppercase; text-shadow:0 1px 8px rgba(0,40,120,0.5);
+    -webkit-text-stroke: 0.8px #fff;
+  }
+  .arrow {
+    width:22px; height:22px;
+    border-right:3px solid #fff; border-bottom:3px solid #fff;
+    transform:rotate(45deg); animation:bounce-down 1.6s ease-in-out infinite;
+  }
+
+  /* ═══ SECTION 2: INVENTARIO ═══ */
+  .inv-letter {
+    display:inline-block; opacity:0;
+    font-size: clamp(36px,8vw,105px);
+  }
+  .inventario-wrap.revealed .inv-letter {
+    animation: letter-pop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .i1 { animation-delay:0.00s; } .i2 { animation-delay:0.07s; }
+  .i3 { animation-delay:0.14s; } .i4 { animation-delay:0.21s; }
+  .i5 { animation-delay:0.28s; } .i6 { animation-delay:0.35s; }
+  .i7 { animation-delay:0.42s; } .i8 { animation-delay:0.49s; }
+  .i9 { animation-delay:0.56s; } .i10{ animation-delay:0.63s; }
+
+  /* ── MENU LIST (names only) ── */
+  .menu-list {
+    display:flex; flex-direction:column; gap:0;
+    width: min(600px, 90vw); margin-top: 36px;
+  }
+
+  .menu-item {
+    opacity:0; transform:translateX(-50px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(0,30,80,0.52);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1.5px solid rgba(255,255,255,0.28);
+    display: flex; align-items: center; gap: 14px;
+    padding: 17px 26px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .menu-item:first-child { border-radius: 18px 18px 0 0; }
+  .menu-item:last-child  { border-radius: 0 0 18px 18px; }
+  .menu-item:not(:first-child) { margin-top: -1.5px; }
+
+  .menu-item:hover {
+    background: rgba(0,50,120,0.72);
+    box-shadow: 0 6px 28px rgba(0,20,80,0.35);
+    z-index: 2;
+    transform: translateX(0) scale(1.015) !important;
+  }
+
+  .inventario-wrap.revealed .menu-item { opacity:1; transform:translateX(0); }
+  .inventario-wrap.revealed .menu-item:nth-child(1) { transition-delay:0.12s; }
+  .inventario-wrap.revealed .menu-item:nth-child(2) { transition-delay:0.22s; }
+  .inventario-wrap.revealed .menu-item:nth-child(3) { transition-delay:0.32s; }
+  .inventario-wrap.revealed .menu-item:nth-child(4) { transition-delay:0.42s; }
+  .inventario-wrap.revealed .menu-item:nth-child(5) { transition-delay:0.52s; }
+  .inventario-wrap.revealed .menu-item:nth-child(6) { transition-delay:0.62s; }
+
+  .menu-icon {
+    width: 48px; height: 48px; flex-shrink:0;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px dashed rgba(255,255,255,0.35);
+    overflow: hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .menu-icon img { width:100%; height:100%; object-fit:cover; border-radius:9px; }
+  .menu-name {
+    flex:1; font-size: clamp(17px,2.8vw,24px); font-weight:900;
+    color: #ffffff;
+    text-shadow: 0 1px 10px rgba(0,20,80,0.6);
+    letter-spacing: 0.02em;
+  }
+  .menu-arrow {
+    font-size: 18px; color: rgba(255,255,255,0.7);
+    transition: transform 0.2s ease;
+  }
+  .menu-item:hover .menu-arrow { transform: translateX(5px); }
+
+  /* ═══ PRODUCT DETAIL SECTIONS ═══ */
+  .product-section {
+    padding-top: 80px; padding-bottom: 80px;
+  }
+
+  .product-inner {
+    width: min(640px, 90vw);
+    display: flex; flex-direction: column; align-items: center; gap: 32px;
+  }
+
+  /* Product title */
+  .product-title {
+    text-align:center;
+    opacity:0; transform:translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .product-title.visible { opacity:1; transform:translateY(0); }
+
+  .product-emoji { font-size: clamp(40px,8vw,64px); display:block; margin-bottom:8px; }
+  .product-img {
+    width: clamp(260px, 70vw, 560px);
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+    margin: 0 auto 8px;
+    box-shadow: 0 8px 32px rgba(0,20,90,0.3);
+  }
+  .product-name-3d {
+    font-size: clamp(38px, 8vw, 80px);
+    font-weight: 900; line-height:1;
+    letter-spacing: -0.02em; color: #fff;
+    text-shadow:
+      0  2px 0 #a8d8f8,
+      0  4px 0 #7ec0f0,
+      0  6px 0 #0060b0,
+      0 10px 0 #003880,
+      0 16px 12px rgba(0,30,100,0.4),
+      0 28px 28px rgba(0,30,100,0.22);
+    -webkit-text-stroke: 2px rgba(255,255,255,0.15);
+  }
+
+  /* Price cards */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px; width: 100%;
+    opacity:0; transform:translateY(24px);
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+  }
+  .price-grid.visible { opacity:1; transform:translateY(0); }
+
+  .price-card {
+    background: rgba(0,25,75,0.60);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 16px;
+    padding: 18px 16px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 6px;
+    text-align: center;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: default;
+  }
+  .price-card:hover {
+    background: rgba(0,50,130,0.75);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,20,90,0.35);
+  }
+
+  .price-qty {
+    font-size: clamp(13px,1.8vw,16px); font-weight:900;
+    color: #c8e8ff;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .price-amount {
+    font-size: clamp(22px,4vw,34px); font-weight:900;
+    color: #ffffff;
+    text-shadow: 0 2px 12px rgba(0,40,140,0.5);
+    letter-spacing: -0.01em;
+  }
+  .price-mxn {
+    font-size: clamp(10px,1.4vw,13px); font-weight:700;
+    color: #a0d4ff; letter-spacing:0.1em;
+  }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,25,75,0.55);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 40px; padding: 10px 24px;
+    color: #fff; font-family:'Nunito',sans-serif;
+    font-size: 15px; font-weight:900;
+    text-decoration:none; cursor:pointer;
+    letter-spacing:0.08em;
+    opacity:0; transform:translateY(16px);
+    transition: opacity 0.5s ease 0.4s, transform 0.5s ease 0.4s, background 0.2s ease;
+  }
+  .back-btn.visible { opacity:1; transform:translateY(0); }
+  .back-btn:hover { background: rgba(0,60,150,0.7); }
+
+  /* ── CHARACTER ── */
+  .char-section {
+    min-height: auto; padding: 20px 20px 0px;
+    margin-top: -80px;
+    margin-bottom: -60px;
+  }
+  .char-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .speech-bubble {
+    position: relative;
+    background: #fff;
+    color: #1a3a6b;
+    font-weight: 900;
+    font-size: clamp(15px, 2.8vw, 22px);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 24px rgba(0,30,100,0.22);
+    white-space: nowrap;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -14px; left: 50%;
+    transform: translateX(-50%);
+    border: 7px solid transparent;
+    border-top-color: #fff;
+  }
+  .char-img {
+    width: clamp(200px, 42vw, 340px);
+    filter: drop-shadow(0 16px 40px rgba(0,30,100,0.28));
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    #s1 {
+      justify-content: flex-start;
+      padding-top: 28vh;
+    }
+    #s1 .scroll-hint {
+      bottom: 180px;
+      top: auto;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      transform: none;
+      width: fit-content;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Fixed sky -->
+<div class="sky"></div>
+
+<!-- Fixed clouds -->
+<div class="clouds-layer">
+  <div class="cloud c1">
+    <svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="cg1" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#dff0ff"/></radialGradient>
+        <filter id="cf1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/><feOffset dx="0" dy="8" result="shadow"/><feFlood flood-color="rgba(100,160,220,0.3)" result="color"/><feComposite in="color" in2="shadow" operator="in" result="shadow2"/><feMerge><feMergeNode in="shadow2"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g filter="url(#cf1)">
+        <ellipse cx="260" cy="170" rx="220" ry="60" fill="url(#cg1)"/>
+        <circle cx="160" cy="140" r="75" fill="url(#cg1)"/><circle cx="260" cy="110" r="90" fill="url(#cg1)"/>
+        <circle cx="370" cy="130" r="80" fill="url(#cg1)"/><circle cx="440" cy="160" r="55" fill="url(#cg1)"/>
+        <circle cx="90" cy="165" r="50" fill="url(#cg1)"/>
+        <ellipse cx="240" cy="95" rx="60" ry="25" fill="rgba(255,255,255,0.6)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="cloud c2">
+    <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg2" cx="50%" cy="25%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e4f3ff"/></radialGradient></defs>
+      <ellipse cx="200" cy="145" rx="175" ry="45" fill="url(#cg2)"/>
+      <circle cx="110" cy="115" r="62" fill="url(#cg2)"/><circle cx="200" cy="90" r="72" fill="url(#cg2)"/>
+      <circle cx="295" cy="108" r="58" fill="url(#cg2)"/><circle cx="345" cy="135" r="40" fill="url(#cg2)"/>
+      <circle cx="60" cy="138" r="38" fill="url(#cg2)"/>
+      <ellipse cx="185" cy="76" rx="45" ry="18" fill="rgba(255,255,255,0.55)"/>
+    </svg>
+  </div>
+  <div class="cloud c3">
+    <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg3" cx="50%" cy="28%" r="62%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e0f0ff"/></radialGradient></defs>
+      <ellipse cx="230" cy="160" rx="200" ry="52" fill="url(#cg3)"/>
+      <circle cx="130" cy="128" r="70" fill="url(#cg3)"/><circle cx="235" cy="100" r="85" fill="url(#cg3)"/>
+      <circle cx="340" cy="120" r="72" fill="url(#cg3)"/><circle cx="400" cy="150" r="50" fill="url(#cg3)"/>
+      <circle cx="68" cy="152" r="46" fill="url(#cg3)"/>
+      <ellipse cx="218" cy="86" rx="55" ry="20" fill="rgba(255,255,255,0.58)"/>
+    </svg>
+  </div>
+  <div class="cloud c4">
+    <svg viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg4" cx="50%" cy="25%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e8f5ff"/></radialGradient></defs>
+      <ellipse cx="150" cy="115" rx="130" ry="35" fill="url(#cg4)"/>
+      <circle cx="85" cy="90" r="48" fill="url(#cg4)"/><circle cx="150" cy="70" r="58" fill="url(#cg4)"/>
+      <circle cx="220" cy="85" r="48" fill="url(#cg4)"/>
+      <ellipse cx="140" cy="58" rx="35" ry="14" fill="rgba(255,255,255,0.5)"/>
+    </svg>
+  </div>
+  <div class="cloud c5">
+    <svg viewBox="0 0 350 160" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg5" cx="50%" cy="28%" r="62%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e4f2ff"/></radialGradient></defs>
+      <ellipse cx="175" cy="130" rx="155" ry="40" fill="url(#cg5)"/>
+      <circle cx="100" cy="103" r="55" fill="url(#cg5)"/><circle cx="178" cy="80" r="66" fill="url(#cg5)"/>
+      <circle cx="258" cy="98" r="54" fill="url(#cg5)"/><circle cx="305" cy="122" r="38" fill="url(#cg5)"/>
+      <ellipse cx="165" cy="68" rx="40" ry="16" fill="rgba(255,255,255,0.52)"/>
+    </svg>
+  </div>
+  <div class="cloud c6">
+    <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+      <defs><radialGradient id="cg6" cx="50%" cy="28%" r="65%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e8f6ff"/></radialGradient></defs>
+      <ellipse cx="130" cy="105" rx="115" ry="32" fill="url(#cg6)"/>
+      <circle cx="75" cy="83" r="44" fill="url(#cg6)"/><circle cx="132" cy="63" r="54" fill="url(#cg6)"/>
+      <circle cx="192" cy="78" r="44" fill="url(#cg6)"/>
+      <ellipse cx="122" cy="52" rx="30" ry="12" fill="rgba(255,255,255,0.5)"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Scrollable content -->
+<div class="page">
+
+  <!-- ══ S1: CLOUD ══ -->
+  <section id="s1">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div aria-label="CLOUD">
+        <span class="letter text-3d l1">C</span><span class="letter text-3d l2">L</span><span class="letter text-3d l3">O</span><span class="letter text-3d l4">U</span><span class="letter text-3d l5">D</span>
+      </div>
+      <div class="subtitle">✦ bienvenido ✦</div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <div class="speech-bubble">Matamoros MX</div>
+      <img src="rulov2-removebg-preview.png" alt="Cloud character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ S2: INVENTARIO ══ -->
+  <section id="s2">
+    <div class="inventario-wrap" id="invWrap" style="display:flex;flex-direction:column;align-items:center;">
+      <div aria-label="Inventario">
+        <span class="inv-letter text-3d i1">I</span><span class="inv-letter text-3d i2">n</span><span class="inv-letter text-3d i3">v</span><span class="inv-letter text-3d i4">e</span><span class="inv-letter text-3d i5">n</span><span class="inv-letter text-3d i6">t</span><span class="inv-letter text-3d i7">a</span><span class="inv-letter text-3d i8">r</span><span class="inv-letter text-3d i9">i</span><span class="inv-letter text-3d i10">o</span>
+      </div>
+
+      <nav class="menu-list">
+        <a class="menu-item" href="#p1">
+          <span class="menu-icon"><img src="image (14).png" alt="Dro Exotic"></span>
+          <span class="menu-name">Dro Exotic</span>
+          <span class="menu-arrow">›</span>
+        </a>
+        <a class="menu-item" href="#p2">
+          <span class="menu-icon"><img src="image.png" alt="Rolados de Dro"></span>
+          <span class="menu-name">Rolados de Dro</span>
+          <span class="menu-arrow">›</span>
+        </a>
+        <a class="menu-item" href="#p3">
+          <span class="menu-icon"><img src="image (1).png" alt="Rolados con Cera"></span>
+          <span class="menu-name">Rolados con Cera</span>
+          <span class="menu-arrow">›</span>
+        </a>
+        <a class="menu-item" href="#p4">
+          <span class="menu-icon"><img src="image (2).png" alt="Waxitos"></span>
+          <span class="menu-name">Waxitos</span>
+          <span class="menu-arrow">›</span>
+        </a>
+        <a class="menu-item" href="#p5">
+          <span class="menu-icon"><img src="download.jpg" alt="Cerita"></span>
+          <span class="menu-name">Cerita</span>
+          <span class="menu-arrow">›</span>
+        </a>
+        <a class="menu-item" href="#p6">
+          <span class="menu-icon"><img src="download (1).jpg" alt="Moon Rocks"></span>
+          <span class="menu-name">Moon Rocks</span>
+          <span class="menu-arrow">›</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER 2 ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmprkk0lgqh-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P1: DRO EXOTIC ══ -->
+  <section id="p1" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="image (14).png" alt="Dro Exotic" class="product-img">
+        <div class="product-name-3d">Dro Exotic</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">4 gramos</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">6 gramos</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">½ onza</div><div class="price-amount">$2,200</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">1 onza</div><div class="price-amount">$4,200</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmpb7zlsyxh-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P2: ROLADOS DE DRO ══ -->
+  <section id="p2" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="image.png" alt="Rolados de Dro" class="product-img">
+        <div class="product-name-3d">Rolados de Dro</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">1 rolado</div><div class="price-amount">$150</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">2 rolados</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">3 rolados</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">4 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">5 rolados</div><div class="price-amount">$600</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">7 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">8 rolados</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmpos7fepgu-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P3: ROLADOS CON CERA ══ -->
+  <section id="p3" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="image (1).png" alt="Rolados con Cera" class="product-img">
+        <div class="product-name-3d">Rolados con Cera</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">1 rolado</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">2 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">3 rolados</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">4 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER 3 ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmpngpr6r49-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P4: WAXITOS ══ -->
+  <section id="p4" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="image (2).png" alt="Waxitos" class="product-img">
+        <div class="product-name-3d">Waxitos</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">Hitz 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">Muha Meds</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmpbf6qwi8_-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P5: CERITA ══ -->
+  <section id="p5" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="download.jpg" alt="Cerita" class="product-img">
+        <div class="product-name-3d">Cerita</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+  <!-- ══ CHARACTER ══ -->
+  <section class="char-section">
+    <div class="char-wrap">
+      <img src="tmpkg2arl94-removebg-preview.png" alt="character" class="char-img">
+    </div>
+  </section>
+
+  <!-- ══ P6: MOON ROCKS ══ -->
+  <section id="p6" class="product-section">
+    <div class="product-inner">
+      <div class="product-title obs-title">
+        <img src="download (1).jpg" alt="Moon Rocks" class="product-img">
+        <div class="product-name-3d">Moon Rocks</div>
+      </div>
+      <div class="price-grid obs-grid">
+        <div class="price-card"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+      </div>
+      <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
+    </div>
+  </section>
+
+</div><!-- end .page -->
+
+<script>
+  // ── Inventario reveal ──
+  const invWrap = document.getElementById('invWrap');
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) invWrap.classList.add('revealed');
+    });
+  }, { threshold: 0.25 }).observe(invWrap);
+
+  // ── Product sections reveal on scroll ──
+  const titles  = document.querySelectorAll('.obs-title');
+  const grids   = document.querySelectorAll('.obs-grid');
+  const backs   = document.querySelectorAll('.obs-back');
+
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.2 });
+
+  [...titles, ...grids, ...backs].forEach(el => revealObs.observe(el));
+</script>
+
+</body>
+</html>
