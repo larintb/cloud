@@ -256,14 +256,31 @@
     display: flex; flex-direction: column;
     align-items: center; gap: 6px;
     text-align: center;
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: default;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    user-select: none;
   }
   .price-card:hover {
     background: rgba(0,50,130,0.75);
     transform: translateY(-4px);
     box-shadow: 0 12px 36px rgba(0,20,90,0.35);
   }
+  .price-card.selected {
+    background: rgba(37,211,102,0.22);
+    border-color: #25D366;
+    box-shadow: 0 0 0 2px #25D366, 0 8px 28px rgba(37,211,102,0.35);
+    transform: translateY(-4px);
+  }
+  .price-card.selected .price-qty { color: #a0ffcc; }
+  .price-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 13px;
+    color: #25D366;
+    font-weight: 900;
+  }
+  .price-card { position: relative; }
 
   .price-qty {
     font-size: clamp(13px,1.8vw,16px); font-weight:900;
@@ -356,6 +373,105 @@
     box-shadow: 0 12px 36px rgba(37,211,102,0.55);
   }
   .wa-btn svg { flex-shrink: 0; }
+
+  /* ── LOCATION BUTTON ── */
+  .loc-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: rgba(0,25,75,0.60);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    padding: 16px 36px;
+    color: #fff; font-family: 'Nunito', sans-serif;
+    font-size: clamp(17px, 3vw, 22px); font-weight: 900;
+    text-decoration: none; cursor: pointer;
+    letter-spacing: 0.06em;
+    box-shadow: 0 6px 28px rgba(0,30,120,0.35);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .loc-btn:hover {
+    background: rgba(0,50,140,0.8);
+    transform: translateY(-3px);
+  }
+
+  /* ── CART ── */
+  .cart-float {
+    position: fixed; bottom: 28px; right: 24px; z-index: 1000;
+    background: #25D366; border: none; border-radius: 50px;
+    padding: 13px 22px; color: #fff; font-family: 'Nunito', sans-serif;
+    font-size: 16px; font-weight: 900; cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+    transition: background 0.2s, transform 0.3s, opacity 0.3s;
+    opacity: 0; pointer-events: none; transform: translateY(20px);
+  }
+  .cart-float.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .cart-float:hover { background: #1ebe5d; transform: translateY(-3px); }
+  .cart-badge {
+    background: #fff; color: #0a5c2a;
+    border-radius: 50%; width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900;
+  }
+
+  .cart-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,10,40,0.72);
+    backdrop-filter: blur(5px);
+    display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: auto; }
+  .cart-panel {
+    background: linear-gradient(160deg,#091f5c 0%,#0d3588 100%);
+    border: 1.5px solid rgba(255,255,255,0.22);
+    border-radius: 24px 24px 0 0;
+    width: min(580px,100vw); max-height: 82vh;
+    display: flex; flex-direction: column;
+    transform: translateY(40px); transition: transform 0.3s ease;
+    overflow: hidden;
+  }
+  .cart-overlay.open .cart-panel { transform: translateY(0); }
+  .cart-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 24px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.13);
+  }
+  .cart-header h2 { color:#fff; font-size:20px; font-weight:900; letter-spacing:0.05em; }
+  .cart-close {
+    background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
+    width:34px; height:34px; color:#fff; font-size:20px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cart-items { flex:1; overflow-y:auto; padding:14px 20px; display:flex; flex-direction:column; gap:10px; }
+  .cart-item {
+    display:flex; justify-content:space-between; align-items:center;
+    background:rgba(255,255,255,0.08); border-radius:12px; padding:12px 14px; color:#fff;
+  }
+  .cart-item-name { font-size:15px; font-weight:900; }
+  .cart-item-sub { font-size:12px; color:#90caff; margin-top:2px; }
+  .cart-item-price { font-size:16px; font-weight:900; }
+  .cart-item-remove {
+    background:rgba(255,70,70,0.18); border:none; border-radius:50%;
+    width:28px; height:28px; color:#ff9999; font-size:18px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; margin-left:10px;
+  }
+  .cart-empty { text-align:center; color:#7ab0d8; font-size:15px; padding:32px 0; font-weight:700; }
+  .cart-footer {
+    padding:14px 20px 28px; border-top:1px solid rgba(255,255,255,0.13);
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .cart-total { display:flex; justify-content:space-between; color:#fff; font-size:18px; font-weight:900; }
+  .cart-wa-btn {
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background:#25D366; border:none; border-radius:50px;
+    padding:15px; color:#fff; font-family:'Nunito',sans-serif;
+    font-size:17px; font-weight:900; cursor:pointer; letter-spacing:0.05em;
+    box-shadow:0 4px 20px rgba(37,211,102,0.4);
+    transition:background 0.2s, transform 0.2s;
+  }
+  .cart-wa-btn:hover { background:#1ebe5d; transform:translateY(-2px); }
+  .cart-wa-btn:disabled { background:#3a4a5a; box-shadow:none; cursor:default; transform:none; opacity:0.6; }
 
   /* ── MOBILE ── */
   @media (max-width: 600px) {
@@ -528,11 +644,11 @@
         <div class="product-name-3d">Dro Exotic</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">4 gramos</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">6 gramos</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">½ onza</div><div class="price-amount">$2,200</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">1 onza</div><div class="price-amount">$4,200</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Dro Exotic" data-qty="2 gramos" data-price="400"><div class="price-qty">2 gramos</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Dro Exotic" data-qty="4 gramos" data-price="700"><div class="price-qty">4 gramos</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Dro Exotic" data-qty="6 gramos" data-price="1000"><div class="price-qty">6 gramos</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Dro Exotic" data-qty="½ onza" data-price="2200"><div class="price-qty">½ onza</div><div class="price-amount">$2,200</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Dro Exotic" data-qty="1 onza" data-price="4200"><div class="price-qty">1 onza</div><div class="price-amount">$4,200</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -553,13 +669,13 @@
         <div class="product-name-3d">Rolados de Dro</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">1 rolado</div><div class="price-amount">$150</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">2 rolados</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">3 rolados</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">4 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">5 rolados</div><div class="price-amount">$600</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">7 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">8 rolados</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="1 rolado" data-price="150"><div class="price-qty">1 rolado</div><div class="price-amount">$150</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="2 rolados" data-price="300"><div class="price-qty">2 rolados</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="3 rolados" data-price="400"><div class="price-qty">3 rolados</div><div class="price-amount">$400</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="4 rolados" data-price="500"><div class="price-qty">4 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="5 rolados" data-price="600"><div class="price-qty">5 rolados</div><div class="price-amount">$600</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="7 rolados" data-price="800"><div class="price-qty">7 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados de Dro" data-qty="8 rolados" data-price="1000"><div class="price-qty">8 rolados</div><div class="price-amount">$1,000</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -580,10 +696,10 @@
         <div class="product-name-3d">Rolados con Cera</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">1 rolado</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">2 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">3 rolados</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">4 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados con Cera" data-qty="1 rolado" data-price="300"><div class="price-qty">1 rolado</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados con Cera" data-qty="2 rolados" data-price="500"><div class="price-qty">2 rolados</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados con Cera" data-qty="3 rolados" data-price="700"><div class="price-qty">3 rolados</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Rolados con Cera" data-qty="4 rolados" data-price="800"><div class="price-qty">4 rolados</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -604,8 +720,8 @@
         <div class="product-name-3d">Waxitos</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">Hitz 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">Muha Meds</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Waxitos" data-qty="Hitz 2gr" data-price="700"><div class="price-qty">Hitz 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Waxitos" data-qty="Muha Meds" data-price="800"><div class="price-qty">Muha Meds</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -626,8 +742,8 @@
         <div class="product-name-3d">Cerita</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Cerita" data-qty="1 gramo" data-price="300"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Cerita" data-qty="2 gramos" data-price="500"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -648,8 +764,8 @@
         <div class="product-name-3d">Moon Rocks</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
-        <div class="price-card"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Moon Rocks" data-qty="1 gramo" data-price="300"><div class="price-qty">1 gramo</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="Moon Rocks" data-qty="2 gramos" data-price="500"><div class="price-qty">2 gramos</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -674,12 +790,132 @@
         </svg>
         WhatsApp
       </a>
+      <a class="loc-btn" href="ubicacion.html">
+        📍 compartir mi ubicación
+      </a>
     </div>
   </section>
 
 </div><!-- end .page -->
 
+<!-- ══ CARRITO FLOTANTE ══ -->
+<button class="cart-float" id="cartFloat" onclick="openCart()">
+  🛒 Carrito
+  <span class="cart-badge" id="cartBadge">0</span>
+</button>
+
+<!-- ══ MODAL CARRITO ══ -->
+<div class="cart-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>🛒 Tu Pedido</h2>
+      <button class="cart-close" onclick="closeCart()">×</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">Tu carrito está vacío — toca un precio para agregar</div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">$0 MXN</span>
+      </div>
+      <button onclick="goToLocation()" style="display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);border-radius:50px;padding:13px;color:#a8d0ff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;width:100%;letter-spacing:0.04em;transition:background 0.2s;">
+        📍 mandar mi ubicación
+      </button>
+      <button class="cart-wa-btn" id="cartSendBtn" disabled onclick="sendToWhatsApp()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C8.832 3 3 8.832 3 16c0 2.566.742 4.958 2.031 6.984L3 29l6.188-1.984A13 13 0 0 0 16 29c7.168 0 13-5.832 13-13S23.168 3 16 3zm0 2c6.086 0 11 4.914 11 11s-4.914 11-11 11a11 11 0 0 1-5.5-1.484l-.39-.219-4.063 1.297 1.344-3.953-.234-.39A10.96 10.96 0 0 1 5 16C5 9.914 9.914 5 16 5zm-3.281 5.5c-.211 0-.543.078-.828.39-.285.313-1.094 1.063-1.094 2.594s1.118 3.008 1.274 3.22c.156.21 2.164 3.468 5.343 4.718.746.313 1.328.5 1.782.641.746.234 1.426.203 1.968.125.601-.086 1.848-.758 2.11-1.485.26-.726.26-1.35.18-1.484-.078-.133-.289-.211-.602-.367-.312-.156-1.847-.914-2.136-1.016-.289-.102-.5-.156-.71.157-.212.312-.82 1.015-1.008 1.226-.188.211-.375.235-.688.078-.312-.156-1.32-.485-2.515-1.547-.93-.828-1.554-1.852-1.738-2.164-.183-.313-.02-.48.137-.633.141-.14.313-.368.469-.547.156-.18.21-.313.313-.524.101-.21.05-.39-.024-.547-.079-.156-.711-1.715-.977-2.344-.257-.617-.52-.531-.71-.539-.188-.007-.4-.008-.61-.008z"/></svg>
+        Enviar por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
+  // ── CARRITO ──
+  const cart = [];
+
+  function updateCartUI() {
+    const floatBtn = document.getElementById('cartFloat');
+    const badge    = document.getElementById('cartBadge');
+    const itemsEl  = document.getElementById('cartItems');
+    const totalEl  = document.getElementById('cartTotal');
+    const sendBtn  = document.getElementById('cartSendBtn');
+
+    badge.textContent = cart.length;
+    floatBtn.classList.toggle('visible', cart.length > 0);
+
+    if (cart.length === 0) {
+      itemsEl.innerHTML = '<div class="cart-empty">Tu carrito está vacío — toca un precio para agregar</div>';
+      totalEl.textContent = '$0 MXN';
+      sendBtn.disabled = true;
+      return;
+    }
+
+    itemsEl.innerHTML = cart.map((item, i) => `
+      <div class="cart-item">
+        <div>
+          <div class="cart-item-name">${item.product}</div>
+          <div class="cart-item-sub">${item.qty}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <div class="cart-item-price">$${Number(item.price).toLocaleString('es-MX')} MXN</div>
+          <button class="cart-item-remove" onclick="removeItem(${i})" title="Quitar">×</button>
+        </div>
+      </div>
+    `).join('');
+
+    const total = cart.reduce((s, it) => s + Number(it.price), 0);
+    totalEl.textContent = '$' + total.toLocaleString('es-MX') + ' MXN';
+    sendBtn.disabled = false;
+  }
+
+  function removeItem(index) {
+    const item = cart[index];
+    document.querySelectorAll('.price-card').forEach(card => {
+      if (card.dataset.product === item.product && card.dataset.qty === item.qty) {
+        card.classList.remove('selected');
+      }
+    });
+    cart.splice(index, 1);
+    updateCartUI();
+  }
+
+  function toggleCard(card) {
+    const { product, qty, price } = card.dataset;
+    const idx = cart.findIndex(it => it.product === product && it.qty === qty);
+    if (idx >= 0) {
+      cart.splice(idx, 1);
+      card.classList.remove('selected');
+    } else {
+      cart.push({ product, qty, price });
+      card.classList.add('selected');
+    }
+    updateCartUI();
+  }
+
+  function openCart()  { document.getElementById('cartOverlay').classList.add('open'); }
+  function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); }
+
+  function goToLocation() {
+    const params = new URLSearchParams({ items: JSON.stringify(cart) });
+    window.location.href = 'ubicacion.html?' + params.toString();
+  }
+
+  function sendToWhatsApp() {
+    if (!cart.length) return;
+    let msg = 'ey quiero pedir\n\n';
+    cart.forEach(it => {
+      msg += `${it.product.toLowerCase()} ${it.qty} $${Number(it.price).toLocaleString('es-MX')}\n`;
+    });
+    const total = cart.reduce((s, it) => s + Number(it.price), 0);
+    msg += `\ntotal $${total.toLocaleString('es-MX')}`;
+    window.open('https://wa.me/528683628730?text=' + encodeURIComponent(msg), '_blank');
+  }
+
+  document.querySelectorAll('.price-card').forEach(card => {
+    card.addEventListener('click', () => toggleCard(card));
+  });
+
   // ── Inventario reveal ──
   const invWrap = document.getElementById('invWrap');
   new IntersectionObserver((entries) => {
