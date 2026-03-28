@@ -2,7 +2,7 @@ services:
   - type: web
     name: cloud
     env: static
-    buildCommand: sed -i "s|<script src=\"config.js\"></script>|<script>const MAPBOX_TOKEN = '$MAPBOX_TOKEN';</script>|" ubicacion.html
+    buildCommand: sed -i "s/MAPBOX_TOKEN_HERE/$MAPBOX_TOKEN/g" ubicacion.html
     staticPublishPath: ./
     envVars:
       - key: MAPBOX_TOKEN
