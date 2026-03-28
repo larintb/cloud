@@ -221,7 +221,31 @@
     display: block;
     margin: 0 auto 8px;
     box-shadow: 0 8px 32px rgba(0,20,90,0.3);
+    cursor: zoom-in;
   }
+
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+  }
+  #lightbox.open { display: flex; }
+  #lightbox img, #lightbox video {
+    max-width: 92vw; max-height: 88vh;
+    border-radius: 16px;
+    box-shadow: 0 16px 60px rgba(0,0,0,0.7);
+    object-fit: contain;
+  }
+  #lightbox video { width: 92vw; }
+  #lightbox-close {
+    position: absolute; top: 18px; right: 22px;
+    font-size: 36px; color: #fff; cursor: pointer;
+    line-height: 1; opacity: 0.8;
+  }
+  #lightbox-close:hover { opacity: 1; }
   .product-name-3d {
     font-size: clamp(38px, 8vw, 80px);
     font-weight: 900; line-height:1;
@@ -939,7 +963,36 @@
   }, { threshold: 0.2 });
 
   [...titles, ...grids, ...backs].forEach(el => revealObs.observe(el));
+
+  // ── Lightbox ──
+  const lb = document.getElementById('lightbox');
+  const lbClose = document.getElementById('lightbox-close');
+  const lbContent = document.getElementById('lightbox-content');
+
+  document.querySelectorAll('img.product-img').forEach(img => {
+    img.addEventListener('click', () => {
+      lbContent.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
+      lb.classList.add('open');
+    });
+  });
+
+  document.querySelectorAll('video.product-img').forEach(vid => {
+    vid.style.cursor = 'zoom-in';
+    vid.addEventListener('click', () => {
+      lbContent.innerHTML = `<video src="${vid.src}" autoplay controls loop playsinline></video>`;
+      lb.classList.add('open');
+    });
+  });
+
+  lbClose.addEventListener('click', () => { lb.classList.remove('open'); lbContent.innerHTML = ''; });
+  lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('open'); lbContent.innerHTML = ''; } });
 </script>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <div id="lightbox-content"></div>
+</div>
 
 </body>
 </html>
