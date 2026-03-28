@@ -857,6 +857,12 @@
   </div>
 </div>
 
+<!-- Lightbox -->
+<div id="lightbox">
+  <span id="lightbox-close">✕</span>
+  <div id="lightbox-content"></div>
+</div>
+
 <script>
   // ── CARRITO ──
   const cart = [];
@@ -987,12 +993,6 @@
   lbClose.addEventListener('click', () => { lb.classList.remove('open'); lbContent.innerHTML = ''; });
   lb.addEventListener('click', (e) => { if (e.target === lb) { lb.classList.remove('open'); lbContent.innerHTML = ''; } });
 </script>
-
-<!-- Lightbox -->
-<div id="lightbox">
-  <span id="lightbox-close">✕</span>
-  <div id="lightbox-content"></div>
-</div>
 
 </body>
 </html>
