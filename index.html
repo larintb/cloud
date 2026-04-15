@@ -198,6 +198,7 @@
   .product-section {
     padding-top: 80px; padding-bottom: 80px;
   }
+  #p4 { padding-bottom: 160px; }
 
   .product-inner {
     width: min(640px, 90vw);
@@ -279,6 +280,43 @@
     transition: background 0.2s;
   }
   .carousel-dot.active { background: #fff; }
+
+  /* ── WAXITOS ITEM BLOCKS ── */
+  .waxitos-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  .waxitos-item .price-grid {
+    width: clamp(260px, 70vw, 560px);
+  }
+
+  /* ── WAXITOS GALLERY STRIP ── */
+  .waxitos-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: clamp(260px, 70vw, 560px);
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s;
+  }
+  .waxitos-gallery.visible { opacity: 1; transform: translateY(0); }
+  .waxitos-thumb {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: zoom-in;
+    box-shadow: 0 4px 16px rgba(0,20,90,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: block;
+  }
+  .waxitos-thumb:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(0,20,90,0.5);
+  }
 
   /* ── LIGHTBOX ── */
   #lightbox {
@@ -694,12 +732,12 @@
           <span class="menu-arrow">›</span>
         </a>
         <a class="menu-item" href="#psherb">
-          <span class="menu-icon"><img src="prerolls.jpg" alt="Pre Rolados"></span>
+          <span class="menu-icon"><img src="snakpak.jpeg" alt="Pre Rolados"></span>
           <span class="menu-name">Pre Rolados</span>
           <span class="menu-arrow">›</span>
         </a>
         <a class="menu-item" href="#p4">
-          <span class="menu-icon"><video src="hitz.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video></span>
+          <span class="menu-icon"><video src="Special series hitz!.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;"></video></span>
           <span class="menu-name">Waxitos</span>
           <span class="menu-arrow">›</span>
         </a>
@@ -807,8 +845,8 @@
       <div class="product-title obs-title">
         <div class="carousel" id="carousel-prerolls">
           <div class="carousel-track" id="carousel-prerolls-track">
-            <img src="prerolls2.jpeg" alt="Pre Rolados 2">
-            <img src="prerolls.jpg" alt="Pre Rolados">
+            <img src="snakpak.jpeg" alt="Pre Rolados">
+            <img src="snakpak.jpg" alt="Pre Rolados 2">
           </div>
           <button class="carousel-btn prev" onclick="carouselMove('prerolls',-1)">&#8249;</button>
           <button class="carousel-btn next" onclick="carouselMove('prerolls',1)">&#8250;</button>
@@ -820,7 +858,9 @@
         <div class="product-name-3d">Pre Rolados</div>
       </div>
       <div class="price-grid obs-grid">
-        <div class="price-card" data-product="Pre Rolados Sherb" data-qty="5 minitoques" data-price="1200"><div class="price-qty">SHERB</div><div style="font-size:11px;opacity:0.7;font-weight:700;letter-spacing:0.05em;">5 minijoints</div><div class="price-amount">$1,200</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="SNACK PACK" data-qty="1 pz" data-price="300"><div class="price-qty">1 PZ</div><div style="font-size:11px;opacity:0.7;font-weight:700;letter-spacing:0.05em;">SNACK PACK</div><div class="price-amount">$300</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="SNACK PACK" data-qty="2 pz" data-price="500"><div class="price-qty">2 PZ</div><div style="font-size:11px;opacity:0.7;font-weight:700;letter-spacing:0.05em;">SNACK PACK</div><div class="price-amount">$500</div><div class="price-mxn">MXN</div></div>
+        <div class="price-card" data-product="SNACK PACK" data-qty="frasco" data-price="1200"><div class="price-qty">FRASCO</div><div style="font-size:11px;opacity:0.7;font-weight:700;letter-spacing:0.05em;">SNACK PACK</div><div class="price-amount">$1,200</div><div class="price-mxn">MXN</div></div>
       </div>
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
@@ -836,13 +876,49 @@
   <!-- ══ P4: WAXITOS ══ -->
   <section id="p4" class="product-section">
     <div class="product-inner">
+
+      <!-- Título -->
       <div class="product-title obs-title">
-        <video src="hitz.mp4" class="product-img" autoplay loop muted playsinline></video>
         <div class="product-name-3d">Waxitos</div>
       </div>
-      <div class="price-grid obs-grid">
-        <div class="price-card" data-product="Waxitos" data-qty="Hitz 2gr" data-price="700"><div class="price-qty">Hitz 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+
+      <!-- HITZ -->
+      <div class="waxitos-item">
+        <video src="hitz.mp4" class="product-img obs-title" autoplay loop muted playsinline></video>
+        <div class="price-grid obs-grid">
+          <div class="price-card" data-product="Waxitos" data-qty="Hitz 2gr" data-price="700"><div class="price-qty">Hitz 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        </div>
       </div>
+
+      <!-- SPECIAL SERIES HITZ -->
+      <div class="waxitos-item">
+        <video src="Special series hitz!.mp4" class="product-img obs-title" autoplay loop muted playsinline></video>
+        <div class="price-grid obs-grid">
+          <div class="price-card" data-product="Waxitos" data-qty="Hitz Infinity 2gr" data-price="700"><div class="price-qty">Hitz Infinity 2gr</div><div class="price-amount">$700</div><div class="price-mxn">MXN</div></div>
+        </div>
+      </div>
+
+      <!-- FAVORITES -->
+      <div class="waxitos-item">
+        <div class="carousel obs-title" id="carousel-favs">
+          <div class="carousel-track" id="carousel-favs-track">
+            <img src="favs1.jpeg" alt="Favorites 1">
+            <img src="favs2.jpeg" alt="Favorites 2">
+            <img src="favs3.jpg"  alt="Favorites 3">
+          </div>
+          <button class="carousel-btn prev" onclick="carouselMove('favs',-1)">&#8249;</button>
+          <button class="carousel-btn next" onclick="carouselMove('favs',1)">&#8250;</button>
+        </div>
+        <div class="carousel-dots" id="carousel-favs-dots">
+          <div class="carousel-dot active" onclick="carouselGo('favs',0)"></div>
+          <div class="carousel-dot" onclick="carouselGo('favs',1)"></div>
+          <div class="carousel-dot" onclick="carouselGo('favs',2)"></div>
+        </div>
+        <div class="price-grid obs-grid">
+          <div class="price-card" data-product="Waxitos" data-qty="Favorites 3G" data-price="800"><div class="price-qty">Favorites 3G</div><div class="price-amount">$800</div><div class="price-mxn">MXN</div></div>
+        </div>
+      </div>
+
       <a class="back-btn obs-back" href="#s2">← Volver al menú</a>
     </div>
   </section>
@@ -1051,9 +1127,10 @@
   }, { threshold: 0.25 }).observe(invWrap);
 
   // ── Product sections reveal on scroll ──
-  const titles  = document.querySelectorAll('.obs-title');
-  const grids   = document.querySelectorAll('.obs-grid');
-  const backs   = document.querySelectorAll('.obs-back');
+  const titles    = document.querySelectorAll('.obs-title');
+  const grids     = document.querySelectorAll('.obs-grid');
+  const backs     = document.querySelectorAll('.obs-back');
+  const galleries = document.querySelectorAll('.waxitos-gallery');
 
   const revealObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1061,7 +1138,7 @@
     });
   }, { threshold: 0.2 });
 
-  [...titles, ...grids, ...backs].forEach(el => revealObs.observe(el));
+  [...titles, ...grids, ...backs, ...galleries].forEach(el => revealObs.observe(el));
 
   // ── Lightbox ──
   const lb = document.getElementById('lightbox');
@@ -1086,7 +1163,7 @@
     });
   }
   // Lightbox for carousel images
-  document.querySelectorAll('.carousel-track img').forEach(img => {
+  document.querySelectorAll('.carousel-track img, .waxitos-thumb').forEach(img => {
     img.addEventListener('click', () => {
       lbContent.innerHTML = `<img src="${img.src}" alt="${img.alt}">`;
       lb.classList.add('open');
